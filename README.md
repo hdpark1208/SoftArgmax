@@ -1,8 +1,8 @@
 - 👋 Hi, I’m P.hd
 - 👀 I’m interested in Ph.D
-- 🌱 I’m currently learning ML/DL/NLP
+- 🌱 I’m currently learning ML/DL/CV
 - 💞️ I’m looking to collaborate on ...
-- 📫 How to reach me ...
+- 📫 How to reach me ... hdparkAI@gmail.com
 
 <!---
 hdpark1208/hdpark1208 is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
