@@ -1,0 +1,112 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\title{SoftArgmax}
+\author{Heedong Park}
+\date{July 2022}
+
+\begin{document}
+
+\maketitle
+
+\section{Definition}
+
+SoftArgmax$(\mathbf{X}) : \mathbf{R^n} \longrightarrow \mathbf{R}$ 
+
+\quad \,\, $({x_1},{x_2},...,{x_n}) \longmapsto SA(x_i)$: Approximate value of i, if $max(X) = x_i$
+
+
+\begin{equation} 
+SA(X)=\sum_{i \in n} {\frac {\displaystyle e^{x_i}} 
+{\displaystyle \sum_{k \in n} e^{x_k}}} i 
+\end{equation}
+
+\section{Features}
+$\bullet$ Outputs of SoftArgmax is a index of maxium element of X\\(i.e SoftArgmax(X) = i, if max(X) = $x_i$)\\\\
+$\bullet$ Differentiable
+
+
+
+
+\section{Derivative}
+\begin{equation}
+SA^\prime(X)={\partial SA\over \partial x_j}={\partial \sum_{i \in n} {\frac {\displaystyle e^{x_i}}
+{\displaystyle \sum_{k \in n} e^{x_k}}} i \over \partial x_j}    
+\end{equation}
+
+Then, we can say \begin{equation}
+{\partial \sum_{i \in n} {\frac {\displaystyle e^{x_i}}
+{\displaystyle \sum_{k \in n} e^{x_k}}} i \over \partial x_j} =
+{\sum_{i \in n} \partial {\frac {\displaystyle e^{x_i}} {\displaystyle \sum_{k \in n} e^{x_k}}} i \over \partial x_j}
+\end{equation}
+
+First, we will focus on \begin{equation}
+SA_i = {{\frac {\displaystyle e^{x_i}} {\displaystyle \sum_{k \in n} e^{x_k}}} i \over x_j}
+\end{equation}
+
+To represent (1) more simple, let
+\begin{equation}                                                %(5)
+    g_i = i*e^{x_i},\quad g_i\prime = (i+1)*e^{x_i}
+\end{equation}
+\begin{equation}
+    h_i = \sum_{k \in n} e^{x_k} = \Sigma,\quad h_i\prime = e^{x_i}
+\end{equation}
+Then we can express $SA_i$ as ${g_i \over h_i}$ so that calculating $SA_i^\prime$, by Quotient Rule
+\\\\
+Before differentiating, we have to divide into two cases $1) i = j,\,\,2) i \ne j$ 
+\\\\
+{\large 1)i = j}
+\begin{equation}
+    SA_i^\prime=
+    {{\partial \frac {\displaystyle e^{x_i}} {\displaystyle \sum_{k \in n} e^{x_k}}} i
+    \over \partial x_j}=
+    {g_i^\prime*h_i-g_i*h_i^\prime \over h_i^2}
+\end{equation}
+\begin{equation}
+    ={(i+1)*e^{x_i}*\Sigma-i*e^{x_i}*e^{x_j} \over \Sigma^2}=
+    {(i+1)*e^{x_i} \over \Sigma}-{i*e^{x_i}*e^{x_j} \over \Sigma^2}
+\end{equation}
+\begin{equation}
+    =SA_i+{SA_i \over i}-{SA_i^2 \over i}=SA_i(1+{1 \over i}-{SA_i \over i})
+\end{equation}
+\\\\
+{\large 2)i $\ne$ j}
+\begin{equation}
+    SA_i^\prime=
+    {{\partial \frac {\displaystyle e^{x_i}} {\displaystyle \sum_{k \in n} e^{x_k}}} i
+    \over \partial x_j}=
+    {g_i^\prime*h_i-g_i*h_i^\prime \over h_i^2}
+\end{equation}
+\begin{equation}
+    ={-i*e^{x_i}*e^{x_j} \over \Sigma^2}=-{(i*e^{x_i})*(i*e^{x_j}) \over i*\Sigma*\Sigma}
+\end{equation}
+\begin{equation}
+    =-({1 \over i}*SA_i*SA_j)
+\end{equation}
+Now everything is ready
+\\
+Remind formula (3), then we can say
+\begin{equation}
+    SA^\prime(X)=-\sum_{i\ne j} {SA_i*SA_j \over i} + SA_j(1+{1 \over j}-{SA_j \over j})
+\end{equation}
+\begin{equation}
+    \therefore -\sum_i^n {SA_i*SA_j \over j}+SA_j(1+{1 \over j})
+\end{equation}
+(\small Note that, j is index of $x_j \in X$)
+\section{Interpretation}
+Let's see (14) again. we can modify this formula slightly
+\begin{equation}
+    -{SA_j \over j}\sum_i^n {SA_i}+SA_j+{SA_j \over j}
+\end{equation}
+Then ${SA_j \over j}$ is equal to Softmax-function's value and it is obtained during "Foward".
+\\
+It seems to be advantageous in calculationg and still looks as simple as sigmoid, softmax derivative forms.
+\\
+If we write $S_j$ as a softmax($x_j$),
+\begin{equation}
+    -{S_j}\sum_i^n {SA_i}+SA_j+{S_j}
+\end{equation}
+\end{document}
