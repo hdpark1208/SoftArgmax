@@ -9,5 +9,5 @@ hdpark1208/hdpark1208 is a ✨ special ✨ repository because its `README.md` (t
 You can click the Preview link to take a look at your changes.
 --->
 
-There are Detail explanation and differential expression about SoftArgmax in SoftArgmax -> SoftArgmax.pdf 
-and simple Code and Example about SoftArgmax In SoftArgmax.ipynb.
+- There are Detail explanation and differential expression about SoftArgmax in SoftArgmax -> SoftArgmax.pdf
+- and simple Code and Example about SoftArgmax In SoftArgmax.ipynb.
